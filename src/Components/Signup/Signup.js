@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Logo from '../../olx-logo.png';
 import './Signup.css';
-import { FirebaseContext } from '../../Store/FirebaseContext';
+import { FirebaseContext } from '../../Store/Context';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
@@ -96,7 +96,7 @@ export default function Signup() {
           <br />
           <button disabled={loading}>{loading ? 'Signing up...' : 'Signup'}</button>
         </form>
-        <a href="#">Login</a>
+        <a onClick={()=> navigate("/login")} >Login</a>
         <p>{error}</p>
       </div>
     </div>

@@ -1,7 +1,5 @@
 import React, { useState , useContext} from 'react';
-import { FirebaseContext } from '../../Store/FirebaseContext';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
+import { getAuth} from 'firebase/auth';
 import Logo from '../../olx-logo.png';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +10,7 @@ function Login() {
   const [email, setEmail] = useState("") 
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
   const auth = getAuth();
   const navigate = useNavigate()
 
@@ -23,7 +22,7 @@ function Login() {
       navigate("/"); // Navigate to the home page after successful sign-in
     } catch (error) {
       // Handle sign-in error here
-      console.error("Error signing in:", error);
+      setError(error.message)
     }finally{
       setLoading(false)
     }
@@ -59,8 +58,9 @@ function Login() {
           <br />
           <br />
           <button disabled={loading}>{loading ? 'Signin...' : 'Signin'}</button>
+          <p className='text-danger' >{error}</p>
         </form>
-        <a >Signup</a>
+        <a onClick={()=> navigate("/signup")} >Signup</a>
       </div>
     </div>
   );

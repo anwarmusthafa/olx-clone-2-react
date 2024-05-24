@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import './Header.css';
 import OlxLogo from '../../assets/OlxLogo';
@@ -6,11 +6,24 @@ import Search from '../../assets/Search';
 import Arrow from '../../assets/Arrow';
 import SellButton from '../../assets/SellButton';
 import SellButtonPlus from '../../assets/SellButtonPlus';
+import { AuthContext } from '../../Store/Context';
+import { useNavigate } from 'react-router-dom';
+import { getAuth} from 'firebase/auth';
+
 function Header() {
+
+  const {user} = useContext(AuthContext)
+  const auth = getAuth();
+  const navigate = useNavigate()
+  const handleLoginClick = () => {
+    if (!user) {
+      navigate('/login');
+    }
+  };
   return (
     <div className="headerParentDiv">
       <div className="headerChildDiv">
-        <div className="brandName">
+        <div className="brandName" onClick={()=> navigate("/")}>
           <OlxLogo></OlxLogo>
         </div>
         <div className="placeSearch">
@@ -34,11 +47,22 @@ function Header() {
           <Arrow></Arrow>
         </div>
         <div className="loginPage">
-          <span>Login</span>
+          <span 
+            className='text-primary' 
+            style={{ cursor: 'pointer' }}
+            onClick={handleLoginClick}
+          >
+            {user ? `Welcome ${user.displayName}` : 'Login'}
+          </span>
           <hr />
         </div>
+          <span style={{ cursor:'pointer'}} className='text-primary' onClick={()=>{
+            auth.signOut();
+            navigate("/login")
 
-        <div className="sellMenu">
+          }} >{user?'Logout':""}</span>
+
+        <div className="sellMenu" onClick={()=> navigate("/create")}>
           <SellButton></SellButton>
           <div className="sellMenuContent">
             <SellButtonPlus></SellButtonPlus>
